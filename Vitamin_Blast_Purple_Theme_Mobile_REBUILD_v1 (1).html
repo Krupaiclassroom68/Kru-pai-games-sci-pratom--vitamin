@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Vitamin Blast! (Purple) 🧪✨</title>
+  <style>
+    :root{
+      --bg1:#140024; --bg2:#2a0450;
+      --stroke:#8a4dff; --glow:#b78cff;
+      --text:#f4efff; --muted:#d8caff;
+      --good:#57ffbf; --bad:#ff6aa6; --gold:#ffd56b;
+      --shadow: 0 18px 55px rgba(0,0,0,.40);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans Thai", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 550px at 28% 12%, #3d0b7a 0%, transparent 58%),
+        radial-gradient(1000px 700px at 78% 35%, #6a12c9 0%, transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      min-height:100svh;
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .starsBg{
+      position:fixed; inset:0; pointer-events:none; opacity:.22;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 120px 80px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 220px 140px, #fff, transparent 60%),
+        radial-gradient(2px 2px at 60px 200px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 180px 260px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 320px 120px, #fff, transparent 60%),
+        radial-gradient(2px 2px at 420px 220px, #fff, transparent 60%),
+        radial-gradient(1px 1px at 520px 60px, #fff, transparent 60%);
+      background-size: 600px 300px;
+      animation: drift 18s linear infinite;
+      filter: blur(.2px);
+    }
+    @keyframes drift{ from{transform:translateY(0)} to{transform:translateY(-80px)} }
+
+    .wrap{
+      width:min(980px, 96vw);
+      margin:0 auto;
+      height:100svh;
+      padding: 10px 10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(138,77,255,.35);
+      background: linear-gradient(180deg, rgba(33,8,61,.75), rgba(20,0,36,.55));
+      border-radius: 18px;
+      box-shadow: 0 0 0 1px rgba(183,140,255,.10) inset, 0 10px 30px rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+    }
+    .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+    .badge{
+      width:42px; height:42px; border-radius: 14px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #b78cff 40%, #6a12c9 75%, #2a0450 100%);
+      box-shadow: 0 0 18px rgba(183,140,255,.65);
+      display:grid; place-items:center;
+      color:#150025; font-weight:1000; user-select:none; flex:0 0 auto;
+    }
+    .title{min-width:0; line-height:1.12}
+    .title .h{font-size:15px; font-weight:1000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .title .s{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .hud{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+    .pill{
+      border:1px solid rgba(138,77,255,.35);
+      background: rgba(29,10,52,.55);
+      padding: 7px 10px;
+      border-radius:999px;
+      font-weight:900;
+      display:flex; align-items:center; gap:8px;
+      box-shadow: 0 0 0 1px rgba(183,140,255,.08) inset;
+      user-select:none;
+    }
+    .pill small{font-weight:900; color:var(--muted)}
+    .btn{
+      border:none;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 1000;
+      cursor:pointer;
+      color: #140024;
+      background: linear-gradient(180deg, #ffd56b, #ffb84b);
+      box-shadow: 0 10px 18px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.25) inset;
+      transition: transform .08s ease, filter .12s ease;
+      user-select:none;
+      touch-action: manipulation;
+      white-space:nowrap;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); filter: brightness(.98); }
+    .btn.secondary{
+      color: var(--text);
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(183,140,255,.35);
+      box-shadow: 0 0 0 1px rgba(183,140,255,.10) inset;
+    }
+    .btn.danger{ color:#fff; background: linear-gradient(180deg, #ff6aa6, #ff3f86); }
+
+    .stage{
+      position:relative;
+      flex:1;
+      border-radius: 22px;
+      border: 1px solid rgba(138,77,255,.30);
+      background:
+        radial-gradient(900px 500px at 50% 0%, rgba(183,140,255,.20), transparent 60%),
+        radial-gradient(700px 400px at 20% 60%, rgba(106,18,201,.25), transparent 65%),
+        rgba(29,10,52,.35);
+      box-shadow: 0 0 0 1px rgba(183,140,255,.08) inset, var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .scoreRow{
+      position:sticky;
+      top:0;
+      z-index:5;
+      padding: 10px 10px 8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      background: linear-gradient(180deg, rgba(20,0,36,.65), rgba(20,0,36,0));
+      backdrop-filter: blur(6px);
+    }
+    .starsLine{
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+      align-items:center;
+      min-height: 20px;
+      max-width: 70%;
+    }
+    .starsLine span{
+      font-size: 18px;
+      filter: drop-shadow(0 0 10px rgba(255,213,107,.35));
+    }
+    .miniNote{
+      font-weight:950;
+      color:var(--muted);
+      font-size:12px;
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    /* Main content */
+    .content{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding: 12px 12px 10px;
+    }
+
+    .questionCard{
+      border-radius: 18px;
+      border: 1px solid rgba(183,140,255,.45);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.14), transparent 42%),
+        linear-gradient(180deg, rgba(183,140,255,.18), rgba(106,18,201,.10));
+      box-shadow: 0 0 22px rgba(183,140,255,.38), 0 14px 28px rgba(0,0,0,.22);
+      padding: 14px 14px 12px;
+      position:relative;
+      min-height: 128px;
+    }
+    .emojiPop{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      font-size: 82px;
+      opacity:0;
+      transform: scale(.6);
+      transition: opacity .15s ease, transform .25s ease;
+      filter: drop-shadow(0 0 18px rgba(255,255,255,.45));
+    }
+    .emojiPop.show{ opacity:1; transform: scale(1.12); }
+    .qText{
+      margin:0;
+      font-weight: 1000;
+      letter-spacing: .1px;
+      font-size: clamp(18px, 4.6vw, 28px);
+      line-height: 1.18;
+      text-shadow: 0 0 16px rgba(183,140,255,.45);
+    }
+    .qMeta{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-weight:950;
+      font-size: 13px;
+    }
+    .chip{
+      padding: 6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(183,140,255,.25);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 0 0 1px rgba(183,140,255,.06) inset;
+    }
+    .chip b{ color: var(--text); }
+
+    .choices{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .vitBall{
+      border-radius: 18px;
+      border: 1px solid rgba(183,140,255,.35);
+      background: rgba(255,255,255,.10);
+      box-shadow: 0 0 0 1px rgba(183,140,255,.10) inset, 0 14px 30px rgba(0,0,0,.20);
+      padding: 14px 10px;
+      text-align:center;
+      user-select:none;
+      cursor:pointer;
+      touch-action: manipulation;
+      transition: transform .10s ease, filter .12s ease;
+    }
+    .vitBall:active{ transform: translateY(1px) scale(.99); }
+    .vitBall .t1{ font-size: 13px; color: var(--muted); font-weight: 950; line-height:1; }
+    .vitBall .t2{ font-size: 30px; font-weight:1000; line-height:1.05; }
+    .vitBall.disabled{ opacity:.45; pointer-events:none; }
+    @keyframes shake{
+      0%{transform:translateX(0)}
+      25%{transform:translateX(-8px)}
+      50%{transform:translateX(8px)}
+      75%{transform:translateX(-6px)}
+      100%{transform:translateX(0)}
+    }
+    .shake{ animation: shake 260ms ease-out; }
+    @keyframes pop{ to{ transform: scale(1.08); opacity: 0; } }
+    .pop{ animation: pop 340ms ease-out forwards; }
+
+    .feedbackBar{
+      margin-top:auto;
+      padding: 10px 12px 12px;
+      text-align:center;
+      font-weight: 1000;
+      min-height: 28px;
+      color: var(--muted);
+      background: linear-gradient(0deg, rgba(20,0,36,.75), rgba(20,0,36,0));
+      backdrop-filter: blur(6px);
+    }
+    .feedbackBar.good{ color: var(--good); }
+    .feedbackBar.bad{ color: var(--bad); }
+
+    /* overlays */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 50;
+    }
+    .panel{
+      width:min(860px, 96vw);
+      border-radius: 22px;
+      border: 1px solid rgba(183,140,255,.35);
+      background: linear-gradient(180deg, rgba(29,10,52,.92), rgba(20,0,36,.88));
+      box-shadow: 0 20px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(183,140,255,.10) inset;
+      padding: 16px 16px 14px;
+      backdrop-filter: blur(10px);
+      max-height: 92svh;
+      overflow:auto;
+    }
+    .panel h2{ margin:0 0 8px; font-size: 20px; letter-spacing:.2px; }
+    .panel p{ margin:0 0 12px; color: var(--muted); font-weight: 850; line-height:1.35; }
+    .nameRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 10px 0 12px; }
+    input{
+      flex:1 1 240px;
+      border-radius: 14px;
+      border: 1px solid rgba(183,140,255,.35);
+      background: rgba(255,255,255,.06);
+      padding: 12px 12px;
+      color: var(--text);
+      font-weight: 950;
+      outline:none;
+      box-shadow: 0 0 0 1px rgba(183,140,255,.08) inset;
+      font-size: 18px;
+    }
+    input::placeholder{ color: rgba(216,202,255,.65); font-weight:850; }
+    .summaryBox{
+      border-radius: 16px;
+      border: 1px solid rgba(183,140,255,.25);
+      background: rgba(255,255,255,.05);
+      padding: 10px 12px;
+      max-height: 260px;
+      overflow:auto;
+      margin-top: 10px;
+    }
+    .summaryBox ul{ margin: 6px 0 0 18px; padding:0; }
+    .summaryBox li{ margin: 6px 0; color: var(--text); font-weight: 850; }
+    .summaryBox b{ color: var(--gold); }
+
+    .bigScore{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(183,140,255,.25);
+      background: rgba(255,255,255,.06);
+      margin: 12px 0;
+    }
+    .bigScore .num{ font-size: 46px; font-weight: 1000; line-height:1; }
+    .bigScore .meta{ text-align:right; font-weight: 900; color: var(--muted); line-height:1.15; }
+
+    .history{
+      margin-top:10px;
+      border-radius: 16px;
+      border: 1px solid rgba(183,140,255,.25);
+      background: rgba(255,255,255,.05);
+      padding: 10px;
+      max-height: 180px;
+      overflow:auto;
+    }
+    .histHead{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom: 8px; }
+    .histItem{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+      padding: 8px 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(183,140,255,.18);
+      background: rgba(0,0,0,.12);
+      margin-bottom: 8px;
+    }
+    .histItem .left{ font-weight: 950; line-height:1.15; }
+    .histItem .left small{ display:block; color: var(--muted); font-weight: 850; margin-top:4px; }
+    .histItem .right{ text-align:right; font-weight: 1000; white-space:nowrap; }
+
+    @media (max-width: 390px){
+      .choices{ gap:10px; }
+      .vitBall .t2{ font-size: 28px; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .starsBg{ animation:none; }
+      .shake{ animation:none; }
+      .pop{ animation:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="starsBg"></div>
+
+  <!-- Start / Review -->
+  <div class="overlay" id="startOverlay" style="display:flex;">
+    <div class="panel">
+      <h2>🧪 Vitamin Blast! (รีบิวด์) 💜✨</h2>
+      <p>
+        อ่าน “สรุปทบทวน” ก่อน แล้วกด <b>Play Game</b><br>
+        🎮 วิธีเล่น: เลือกคำตอบจาก “3 ลูกบอล” ที่เรียงใต้โจทย์<br>
+        ✅ ถูก = แตก + ⭐ • ❌ ผิด = สะดุ้ง (ไม่แตก)
+      </p>
+
+      <div class="nameRow">
+        <input id="playerName" maxlength="24" placeholder="พิมพ์ชื่อผู้เล่น (เก็บเป็นหลักฐานว่าเล่นจริง)" />
+        <button class="btn secondary" id="muteBtn" type="button">🔊 เสียง: เปิด</button>
+      </div>
+
+      <div class="summaryBox">
+        <b>📌 สรุปวิตามิน (ทบทวนเร็ว)</b>
+        <ul>
+          <li><b>Vit A</b> → การมองเห็นกลางคืน • ผิว/เยื่อบุ</li>
+<li><b>Vit B1</b> → ระบบประสาท • กล้ามเนื้อ • เหน็บชา (เบอริเบอริ)</li>
+<li><b>Vit B2</b> → ผิวหนัง • ปากแตก • ลิ้นอักเสบ</li>
+<li><b>Vit B3</b> → ผิวหนัง/ระบบประสาท • ขาด = เพลลากรา</li>
+<li><b>Vit B12</b> → เม็ดเลือดแดง/เส้นประสาท • ขาด = ซีด ชา</li>
+<li><b>Vit C</b> → ภูมิคุ้มกัน • สมานแผล • เลือดออกตามไรฟัน</li>
+<li><b>Vit D</b> → ดูดซึมแคลเซียม • กระดูก/ฟัน</li>
+<li><b>Vit E</b> → ต้านอนุมูลอิสระ • ปกป้องเซลล์</li>
+<li><b>Vit K</b> → การแข็งตัวของเลือด</li>
+        </ul>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap; align-items:center; margin-top:12px;">
+        <div style="font-size:12px; color:var(--muted); font-weight:850;">
+          Tip: ถ้าทำได้ <b>18/20</b> ถือว่า “เก่งมาก” ⭐
+        </div>
+        <button class="btn" id="startBtn" type="button">▶️ Play Game</button>
+      </div>
+
+      <div class="history">
+        <div class="histHead">
+          <b>📜 หลักฐานการเล่น (ในเครื่องนี้)</b>
+          <button class="btn danger" id="clearHistoryBtn" type="button">ล้างประวัติ</button>
+        </div>
+        <div id="historyList" style="font-size:12px; color:var(--muted); font-weight:850;">ยังไม่มีประวัติ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="overlay" id="resultOverlay">
+    <div class="panel">
+      <h2 id="resultTitle">🏁 สรุปคะแนน</h2>
+      <div class="bigScore">
+        <div class="num" id="finalScore">0</div>
+        <div class="meta">
+          <div id="finalName">ผู้เล่น: -</div>
+          <div id="finalCorrect">ดาว: 0/20</div>
+          <div id="finalProgress">ทำไป: 20/20</div>
+        </div>
+      </div>
+      <p id="resultMsg">—</p>
+      <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
+        <button class="btn secondary" id="backHomeBtn" type="button">🏠 กลับหน้าแรก</button>
+        <button class="btn" id="retryBtn" type="button">🔁 เล่นใหม่</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="badge">KP</div>
+        <div class="title">
+          <div class="h">Vitamin Blast! 🧪</div>
+          <div class="s">3 ตัวเลือกเรียงใต้โจทย์ • มือถือไม่เพี้ยน</div>
+        </div>
+      </div>
+      <div class="hud">
+        <div class="pill"><small>ผู้เล่น</small> <span id="hudName">-</span></div>
+        <div class="pill"><small>ดาว</small> <span id="hudScore">0</span></div>
+        <div class="pill"><small>ข้อ</small> <span id="hudProgress">0/20</span></div>
+        <button class="btn secondary" id="restartBtn" type="button">🔁</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="scoreRow">
+        <div class="starsLine" id="starsLine" aria-label="score stars"></div>
+        <div class="miniNote">
+          <div id="timerText">⏳ 10s</div>
+          <div style="margin-top:2px;">เลือก Vit ให้ถูก 👇</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="questionCard" id="questionCard">
+          <div class="emojiPop" id="emojiPop">👍</div>
+          <p class="qText" id="questionText">พร้อมแล้ว 💜</p>
+          <div class="qMeta">
+            <span class="chip">ข้อ <b id="qNum">0</b>/20</span>
+            <span class="chip">เวลา <b>10</b> วิ</span>
+            <span class="chip">เป้าหมาย <b>20</b> ดาว</span>
+          </div>
+        </div>
+
+        <div class="choices" id="choices">
+          <!-- buttons injected -->
+        </div>
+      </div>
+
+      <div class="feedbackBar" id="feedback">กด Play แล้วลุยได้เลย 🧪✨</div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const QUESTIONS = [{"q": "อาการเหน็บชา ชาปลายมือปลายเท้า (ขาดรุนแรง = เบอริเบอริ) มักขาดวิตามินอะไร?", "a": "B1", "opts": ["B1", "E", "A"]}, {"q": "เลือดออกตามไรฟัน/ฟกช้ำง่าย แผลหายช้า มักขาดวิตามินอะไร?", "a": "C", "opts": ["C", "E", "B3"]}, {"q": "ตาฟางตอนกลางคืน/มองไม่ชัดในที่มืด มักขาดวิตามินอะไร?", "a": "A", "opts": ["B3", "A", "B1"]}, {"q": "กระดูกอ่อนในเด็ก/เป็นโรคกระดูกอ่อน (rickets) มักขาดวิตามินอะไร?", "a": "D", "opts": ["B1", "D", "A"]}, {"q": "ปากแตก มุมปากเป็นแผล ลิ้นแดงแสบ มักขาดวิตามินอะไร?", "a": "B2", "opts": ["C", "B2", "D"]}, {"q": "ภูมิคุ้มกันลดลง เป็นหวัดบ่อย อาจเกี่ยวกับการขาดวิตามินอะไร?", "a": "C", "opts": ["C", "E", "B12"]}, {"q": "ผิวแห้ง ตาแห้ง เยื่อบุตาแห้ง อาจขาดวิตามินอะไร?", "a": "A", "opts": ["D", "A", "E"]}, {"q": "ปวดกระดูก/กระดูกไม่แข็งแรง อาจขาดวิตามินอะไร?", "a": "D", "opts": ["K", "D", "B12"]}, {"q": "ซีด เหนื่อยง่าย + ชาปลายมือปลายเท้า อาจขาดวิตามินอะไร?", "a": "B12", "opts": ["B12", "D", "A"]}, {"q": "เลือดหยุดยาก/เลือดไหลนาน อาจขาดวิตามินอะไร?", "a": "K", "opts": ["K", "B12", "A"]}, {"q": "ผิวหนังอักเสบ ท้องเสีย สับสน (เพลลากรา) มักขาดวิตามินอะไร?", "a": "B3", "opts": ["B2", "D", "B3"]}, {"q": "วิตามินที่ช่วยต้านอนุมูลอิสระ ปกป้องเยื่อหุ้มเซลล์ คือวิตามินอะไร?", "a": "E", "opts": ["E", "A", "D"]}, {"q": "การสร้างคอลลาเจนช่วยให้แผลสมานดี เกี่ยวกับวิตามินอะไร?", "a": "C", "opts": ["C", "B3", "B2"]}, {"q": "ช่วยดูดซึมแคลเซียมให้กระดูกแข็งแรง เกี่ยวกับวิตามินอะไร?", "a": "D", "opts": ["E", "B2", "D"]}, {"q": "ช่วยในการมองเห็นและเยื่อบุผิว เกี่ยวกับวิตามินอะไร?", "a": "A", "opts": ["D", "E", "A"]}, {"q": "ระบบประสาททำงานดี กล้ามเนื้อแข็งแรง เกี่ยวกับวิตามินอะไร?", "a": "B1", "opts": ["B12", "A", "B1"]}, {"q": "ผิวหนังและมุมปากสุขภาพดี เกี่ยวกับวิตามินอะไร?", "a": "B2", "opts": ["C", "B12", "B2"]}, {"q": "ช่วยให้เลือดแข็งตัวตามปกติ เกี่ยวกับวิตามินอะไร?", "a": "K", "opts": ["B1", "B12", "K"]}, {"q": "ช่วยสร้างเม็ดเลือดแดงและการทำงานของเส้นประสาท เกี่ยวกับวิตามินอะไร?", "a": "B12", "opts": ["B12", "K", "E"]}, {"q": "ช่วยป้องกันเพลลากรา (ผิวหนังอักเสบ/ท้องเสีย/สับสน) เกี่ยวกับวิตามินอะไร?", "a": "B3", "opts": ["D", "E", "B3"]}];
+  const TOTAL = 20;
+  const TIME_LIMIT = 10;
+
+  const startOverlay = document.getElementById('startOverlay');
+  const resultOverlay = document.getElementById('resultOverlay');
+
+  const startBtn = document.getElementById('startBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+  const playerNameInput = document.getElementById('playerName');
+
+  const hudName = document.getElementById('hudName');
+  const hudScore = document.getElementById('hudScore');
+  const hudProgress = document.getElementById('hudProgress');
+
+  const starsLine = document.getElementById('starsLine');
+  const timerText = document.getElementById('timerText');
+
+  const questionText = document.getElementById('questionText');
+  const questionCard = document.getElementById('questionCard');
+  const emojiPop = document.getElementById('emojiPop');
+  const feedback = document.getElementById('feedback');
+  const choices = document.getElementById('choices');
+  const qNum = document.getElementById('qNum');
+
+  const restartBtn = document.getElementById('restartBtn');
+  const backHomeBtn = document.getElementById('backHomeBtn');
+  const retryBtn = document.getElementById('retryBtn');
+
+  const finalScore = document.getElementById('finalScore');
+  const finalName = document.getElementById('finalName');
+  const finalCorrect = document.getElementById('finalCorrect');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultMsg = document.getElementById('resultMsg');
+
+  const historyList = document.getElementById('historyList');
+
+  let muted = false;
+  let playerName = "-";
+
+  let deck = [];
+  let idx = 0;
+  let stars = 0;
+  let progress = 0;
+  let current = null;
+
+  let tLeft = TIME_LIMIT;
+  let tickTimer = null;
+  let locked = false;
+
+  const HIST_KEY = "kp_vitamin_blast_rebuild_history";
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function loadHistory(){
+    try{
+      const raw = localStorage.getItem(HIST_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveHistory(list){
+    try{ localStorage.setItem(HIST_KEY, JSON.stringify(list)); }catch(e){}
+  }
+  function nowStamp(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  function renderHistory(){
+    const h = loadHistory();
+    if(!h.length){
+      historyList.textContent = "ยังไม่มีประวัติ";
+      return;
+    }
+    historyList.innerHTML = "";
+    h.slice(0, 12).forEach(item => {
+      const div = document.createElement("div");
+      div.className = "histItem";
+      div.innerHTML = `
+        <div class="left">
+          👤 ${escapeHtml(item.name || "-")}
+          <small>🕒 ${escapeHtml(item.when)} • ⭐ ${item.stars}/${TOTAL}</small>
+        </div>
+        <div class="right">✅ ${item.stars}</div>
+      `;
+      historyList.appendChild(div);
+    });
+  }
+
+  // Audio
+  let audioCtx = null;
+  function initAudio(){
+    if (audioCtx) return;
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ audioCtx=null; }
+  }
+  function beep(freq=880, dur=0.07, type="sine", gain=0.07){
+    if (muted) return;
+    initAudio();
+    if (!audioCtx) return;
+    const t = audioCtx.currentTime;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.frequency.value = freq;
+    o.type = type;
+    g.gain.value = gain;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(t);
+    o.stop(t + dur);
+  }
+  function clickSound(){ beep(660, 0.045, "square", 0.05); }
+  function goodSound(){
+    beep(880, 0.05, "sine", 0.08);
+    setTimeout(()=>beep(1175, 0.06, "sine", 0.08), 55);
+  }
+  function badSound(){
+    beep(220, 0.07, "triangle", 0.08);
+    setTimeout(()=>beep(160, 0.09, "triangle", 0.06), 60);
+  }
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for (let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  function setHUD(){
+    hudName.textContent = playerName || "-";
+    hudScore.textContent = String(stars);
+    hudProgress.textContent = `${progress}/${TOTAL}`;
+    qNum.textContent = String(progress);
+  }
+  function setFeedback(text, kind=null){
+    feedback.textContent = text;
+    feedback.classList.remove('good','bad');
+    if (kind) feedback.classList.add(kind);
+  }
+  function addStar(){
+    const s = document.createElement('span');
+    s.textContent = "⭐";
+    starsLine.appendChild(s);
+  }
+  function resetStars(){ starsLine.innerHTML = ""; }
+
+  function stopTimer(){
+    if (tickTimer){ clearInterval(tickTimer); tickTimer=null; }
+  }
+  function updateTimerUI(){
+    timerText.textContent = `⏳ ${Math.ceil(tLeft)}s`;
+  }
+
+  function showEmoji(emoji){
+    if (!emojiPop) return;
+    emojiPop.textContent = emoji;
+    emojiPop.classList.add('show');
+    setTimeout(()=>emojiPop.classList.remove('show'), 420);
+  }
+
+  function setChoices(opts){
+    choices.innerHTML = "";
+    opts.forEach(vit => {
+      const b = document.createElement('div');
+      b.className = 'vitBall';
+      b.innerHTML = `<div class="t1">Vit</div><div class="t2">${vit}</div>`;
+      b.addEventListener('click', () => pick(b, vit));
+      choices.appendChild(b);
+    });
+  }
+
+  function lockChoices(){
+    Array.from(choices.children).forEach(el => el.classList.add('disabled'));
+  }
+
+  function startGame(){
+    playerName = (playerNameInput.value || "").trim();
+    if (!playerName){
+      playerNameInput.focus();
+      playerNameInput.placeholder = "⚠️ ใส่ชื่อก่อนนะ เพื่อเก็บหลักฐานว่าเล่นจริง";
+      badSound();
+      return;
+    }
+
+    stars = 0;
+    progress = 0;
+    idx = 0;
+    current = null;
+    locked = false;
+
+    resetStars();
+    setFeedback("เริ่มเลย! เลือกวิตามินให้ถูกนะ 🧪✨");
+
+    deck = shuffle(QUESTIONS).slice(0, TOTAL);
+
+    startOverlay.style.display = "none";
+    resultOverlay.style.display = "none";
+
+    setHUD();
+    nextQ();
+  }
+
+  function nextQ(){
+    stopTimer();
+    locked = false;
+
+    if (idx >= deck.length){
+      endGame();
+      return;
+    }
+
+    current = deck[idx++];
+    progress += 1;
+    setHUD();
+
+    questionText.textContent = current.q;
+    questionCard.classList.remove('shake');
+    tLeft = TIME_LIMIT;
+    updateTimerUI();
+
+    setChoices(current.opts);
+
+    const startedAt = performance.now();
+    tickTimer = setInterval(() => {
+      const elapsed = (performance.now() - startedAt) / 1000;
+      tLeft = Math.max(0, TIME_LIMIT - elapsed);
+      updateTimerUI();
+      if (tLeft <= 0){
+        stopTimer();
+        locked = true;
+        setFeedback("⏰ หมดเวลา! ไปข้อต่อไป…", "bad");
+        badSound();
+        questionCard.classList.add('shake');
+        lockChoices();
+        setTimeout(()=> nextQ(), 420);
+      }
+    }, 50);
+  }
+
+  function pick(ballEl, vit){
+    if (!current || locked) return;
+    locked = true;
+    stopTimer();
+    clickSound();
+
+    const ok = (vit === current.a);
+    lockChoices();
+
+    if (ok){
+      stars += 1;
+      addStar();
+      setHUD();
+      setFeedback("✅ ถูกต้อง! +⭐", "good");
+      goodSound();
+      showEmoji("👍");
+      ballEl.classList.add('pop');
+      setTimeout(()=> nextQ(), 420);
+    } else {
+      setFeedback("❌ ยังไม่ใช่! ลองใหม่รอบหน้า 😅", "bad");
+      badSound();
+      ballEl.classList.add('shake');
+      questionCard.classList.add('shake');
+      setTimeout(()=> nextQ(), 520);
+    }
+  }
+
+  function endGame(){
+    stopTimer();
+    choices.innerHTML = "";
+
+    const h = loadHistory();
+    h.unshift({ name: playerName, when: nowStamp(), stars });
+    saveHistory(h);
+    renderHistory();
+
+    resultOverlay.style.display = "flex";
+    finalScore.textContent = String(stars);
+    finalName.textContent = `ผู้เล่น: ${playerName}`;
+    finalCorrect.textContent = `ดาว: ${stars}/${TOTAL}`;
+
+    const pass = stars >= 18;
+    resultTitle.textContent = pass ? "🏆 เก่งมาก! ผ่านด่านวิตามิน" : "💜 สู้ต่อได้!";
+    resultMsg.innerHTML = pass
+      ? `สุดยอดเลย ได้ <b>${stars}/${TOTAL}</b> ⭐<br>จำอาการ-วิตามินได้แม่นมาก!`
+      : `ได้ <b>${stars}/${TOTAL}</b> ⭐<br>ลองทบทวนสรุป แล้วเล่นซ้ำอีกรอบนะ 💜`;
+  }
+
+  startBtn.addEventListener('click', () => { initAudio(); startGame(); });
+  retryBtn.addEventListener('click', () => { initAudio(); startGame(); });
+  restartBtn.addEventListener('click', () => { initAudio(); startGame(); });
+
+  backHomeBtn.addEventListener('click', () => {
+    resultOverlay.style.display = "none";
+    startOverlay.style.display = "flex";
+    renderHistory();
+  });
+
+  muteBtn.addEventListener('click', () => {
+    muted = !muted;
+    muteBtn.textContent = muted ? "🔇 เสียง: ปิด" : "🔊 เสียง: เปิด";
+    clickSound();
+  });
+
+  clearHistoryBtn.addEventListener('click', () => {
+    clickSound();
+    if(!confirm("ล้างประวัติการเล่นทั้งหมดในเครื่องนี้?")) return;
+    saveHistory([]);
+    renderHistory();
+  });
+
+  renderHistory();
+  setHUD();
+  updateTimerUI();
+})();
+</script>
+</body>
+</html>
